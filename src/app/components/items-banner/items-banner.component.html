@@ -1,9 +1,9 @@
 <div class="container">
-  <h2>Trending Movies</h2>
+  <h2>{{title}}</h2>
   <div class="grid">
-    <ng-container *ngFor="let i of [0, 1, 2, 3, 4, 5]">
+    <ng-container *ngFor="let item of items">
       <div class="col-6 md:col-3 lg:col-2">
-        <item></item>
+        <item [itemData]="item"></item>
       </div>
     </ng-container>
   </div>

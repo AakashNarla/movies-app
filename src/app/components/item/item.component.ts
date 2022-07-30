@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Movie } from 'src/app/models/movie';
+import { IMAGES_SIZES } from '../../constants/images-sizes';
 
 @Component({
   selector: 'item',
@@ -6,7 +8,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./item.component.scss']
 })
 export class ItemComponent implements OnInit {
+  @Input() itemData: Movie | null = null;
+  readonly imagesSizes = IMAGES_SIZES;
   constructor() {}
-
   ngOnInit(): void {}
 }

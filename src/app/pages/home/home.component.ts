@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit {
     this.moviesService.getMovies('upcoming').subscribe((response: any) => {
       this.upcomingMovies = response.results;
     });
-    this.moviesService.getMovies('top-rated').subscribe((response: any) => {
+    this.moviesService.getMovies('top_rated').subscribe((response: any) => {
       this.topRatedMovies = response.results;
     });
   }

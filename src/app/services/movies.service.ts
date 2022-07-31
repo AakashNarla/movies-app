@@ -12,11 +12,21 @@ export class MoviesService {
   apiKey: string = '0ba433fcad9884f3878175ea24ab9a84';
   constructor(private http: HttpClient) {}
 
-  getMovies(type: string = 'upcoming') {
+  getMovies(type: string = 'upcoming', count: number = 12) {
     return this.http.get<MovieDto>(`${this.baseUrl}/movie/${type}?api_key=${this.apiKey}`).pipe(
       switchMap((resp) => {
-        return of(resp.results.slice(0, 12));
+        return of(resp.results.slice(0, count));
       })
     );
+  }
+
+  searchMovies(page: number = 1) {
+    return this.http
+      .get<MovieDto>(`${this.baseUrl}/movie/popular?page=${page}&api_key=${this.apiKey}`)
+      .pipe(
+        switchMap((resp) => {
+          return of(resp.results.slice(0, 20));
+        })
+      );
   }
 }

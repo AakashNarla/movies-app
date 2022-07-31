@@ -9,11 +9,25 @@ import { MoviesService } from '../../services/movies.service';
 })
 export class MoviesComponent implements OnInit {
   movies: Movie[] = [];
+  totalRecords: number = 10000;
   constructor(private moviesService: MoviesService) {}
 
   ngOnInit(): void {
-    this.moviesService.searchMovies(3).subscribe((movies) => {
+    this.getPagedMovies(1);
+  }
+
+  getPagedMovies(page: number) {
+    this.moviesService.searchMovies(page).subscribe((movies) => {
       this.movies = movies;
     });
+  }
+  paginate(event: any) {
+    //event.first = Index of the first record
+    //event.rows = Number of rows to display in new page
+    //event.page = Index of the new page
+    //event.pageCount = Total number of pages
+
+    console.log(event);
+    this.getPagedMovies(event.page + 1);
   }
 }

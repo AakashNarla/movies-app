@@ -3,6 +3,6 @@ export interface GenresDto {
 }
 
 export interface Genre {
-  gname: string;
+  name: string;
   id: number;
 }

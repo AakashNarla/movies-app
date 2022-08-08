@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { take } from 'rxjs';
 import { Movie } from '../../models/movie';
 import { MoviesService } from '../../services/movies.service';
 
@@ -10,14 +12,29 @@ import { MoviesService } from '../../services/movies.service';
 export class MoviesComponent implements OnInit {
   movies: Movie[] = [];
   totalRecords: number = 10000;
-  constructor(private moviesService: MoviesService) {}
+  genreId: string | null = null;
+  constructor(private moviesService: MoviesService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.getPagedMovies(1);
+    this.route.params.pipe(take(1)).subscribe(({ genreId }) => {
+      console.log(genreId);
+      if (genreId) {
+        this.genreId = genreId;
+        this.getMoviesByGenre(genreId, 1);
+      } else {
+        this.getPagedMovies(1);
+      }
+    });
   }
 
   getPagedMovies(page: number) {
     this.moviesService.searchMovies(page).subscribe((movies) => {
+      this.movies = movies;
+    });
+  }
+
+  getMoviesByGenre(genreId: string, page: number) {
+    this.moviesService.getMovieByGenre(genreId, page).subscribe((movies) => {
       this.movies = movies;
     });
   }
@@ -26,8 +43,10 @@ export class MoviesComponent implements OnInit {
     //event.rows = Number of rows to display in new page
     //event.page = Index of the new page
     //event.pageCount = Total number of pages
-
-    console.log(event);
-    this.getPagedMovies(event.page + 1);
+    if (this.genreId) {
+      this.getMoviesByGenre(this.genreId, event.page + 1);
+    } else {
+      this.getPagedMovies(event.page + 1);
+    }
   }
 }
